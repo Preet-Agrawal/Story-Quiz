@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Story Quiz - Summarizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<head>
+    <title>Summary-Quiz</title>
+    <link rel="icon" type="image/png" href="logo.jpg">
+</head>
+<body>
+  <div class="floating-shape shape1"></div>
+  <div class="floating-shape shape2"></div>
+  <div class="floating-shape shape3"></div>
+  <div class="floating-shape shape4"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" class="logo" width="40" height="40">
+      <h2 class="site-title">Story Quiz</h2>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="header-right" id="navMenu">
+      <a href="{{ url_for('hello_world') }}" class="nav-link">Home</a>
+      <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+      {% if 'username' in session %}
+        <a href="{{ url_for('profile') }}" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3a3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <circle cx="12" cy="7" r="4"/>
+            <path d="M5.5 21a8.38 8.38 0 0 1 13 0"/>
+          </svg>
+          {{ session['username'] }}
+        </a>
+        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth_choice') }}" class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3a3a8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:5px;">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          Login/Register
+        </a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="center-content">
+      <h1 class="main-heading">Turn Stories Into Smart Quizzes</h1>
+      <p class="description">
+        Welcome to Story Quiz! Paste your story or link, and let our AI summarize and quiz you instantly. Perfect for students, readers, and educators who want to learn smarter.
+      </p>
+    </div>
+
+    <div class="text-input-section">
+      <div class="text-area-container">
+        <textarea id="storyInput" placeholder="Paste your story here..."></textarea>
+      </div>
+      <button class="get-started" onclick="submitStory()">Summarize & Quiz</button>
+    </div>
+
+    <!-- Loading Section -->
+    <div id="loadingSection" class="loading-section" style="display: none;">
+      <div class="loading-spinner"></div>
+      <p>Generating your summary and quiz...</p>
+    </div>
+
+    <!-- Result Section -->
+    <div id="resultSection" class="result-section" style="display: none;">
+      <!-- Summary Section -->
+      <div class="summary-container">
+        <h2 class="section-title">📖 Story Summary</h2>
+        <div id="summaryContent" class="summary-content"></div>
+      </div>
+
+      <!-- Quiz Section -->
+      <div class="quiz-container">
+        <div class="quiz-header">
+          <h2 class="section-title">🧠 Quiz Time!</h2>
+          <div class="score-display">
+            <span id="scoreText">Score: 0/5</span>
+            <button id="resetQuiz" class="reset-btn" onclick="resetQuiz()">Reset Quiz</button>
+          </div>
+        </div>
+        <div id="quizContent" class="quiz-content"></div>
+        <div id="quizResults" class="quiz-results" style="display: none;">
+          <h3>🎉 Quiz Complete!</h3>
+          <p id="finalScore"></p>
+          <p id="performanceMessage"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </main>
+</body>
+</html>
